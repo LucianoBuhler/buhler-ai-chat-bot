@@ -8,19 +8,11 @@ const App = () => {
   const [chats, setChats] = useState([])
   const [activeChat, setActiveChat] = useState(null)
 
-
-
   const handleStartChat = () => {
     setIsChatting(true)
 
     if (chats.length === 0) {
-      const newChat = {
-        id: `Chat ${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString()}`,
-        messages:[]
-      }
-      console.log(newChat);
-      
-      setChats([newChat])
+      createNewChat()
     }
   }
 
@@ -32,7 +24,9 @@ const App = () => {
     const newChat = {
       id: uuidv4(),
       displayId: `Chat ${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString()}`,
-      messages:[]
+      messages: initialMessage
+        ? [{ type: 'prompt', text: initialMessage, timestamp: new Date().toLocaleTimeString() }]
+        : [],
     }
 
     const updatedChats = [newChat, ...chats]
