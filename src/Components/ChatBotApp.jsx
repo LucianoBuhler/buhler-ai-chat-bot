@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './ChatBotApp.css'
+
+// load env variables 
+const GPT_API_KEY = import.meta.env.VITE_GPT_API_KEY
 
 const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNewChat }) => {
   const [inputValue, setInputValue] = useState('')
   const [messages, setMessages] = useState(chats[0]?.messages || [])
+  const [isTyping, setIsTyping] = useState(false)
+  const chatEndRef = useRef(null)
 
   useEffect(() => {
     const activeChatObj = chats.find((chat) => chat.id === activeChat)
@@ -14,7 +19,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
     setInputValue(e.target.value)
   }
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (inputValue.trim() === '') return
 
     const newMessage = {
@@ -38,6 +43,46 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
         return chat
       })
       setChats(updatedChats)
+      setIsTyping(true)
+
+      // set the request variables
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${GPT_API_KEY}`,
+      }
+
+      const body = JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: inputValue }],
+        max_tokens: 500,
+      })
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: headers,
+        body: body,
+      })
+
+      const data = await response.json()
+      const chatResponse = data.choices[0].message.content.trim()
+
+      const newResponse = {
+        type: 'response',
+        text: chatResponse,
+        timestamp: new Date().toLocaleTimeString(),
+      }
+
+      const updatedMessagesWithResponse = [...updatedMessages, newResponse]
+      setMessages(updatedMessagesWithResponse)
+      setIsTyping(false)
+
+      const updatedChatsWithResponse = chats.map((chat) => {
+        if (chat.id === activeChat) {
+          return { ...chat, messages: updatedMessagesWithResponse }
+        }
+        return chat
+      })
+      setChats(updatedChatsWithResponse)
     }
   }
 
@@ -63,6 +108,11 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       setActiveChat(newActiveChat)
     }
   }
+
+  // scrool the messages to the end once change between chats
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   return (
     <div className="chat-app">
@@ -99,11 +149,8 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
               {msg.text} <span>{msg.timestamp}</span>
             </div>
           ))}
-
-          {/* <div className="response">
-            Hello! I'm just a computer program, so, I don't have feelings, but I'm here and ready to assist you. How can I help you today? <span>12:12:13</span>
-          </div> */}
-          <div className="typing">Typing...</div>
+          {isTyping && <div className="typing">Typing...</div>}
+          <div ref={chatEndRef}></div>
         </div>
         <form className="msg-form" onSubmit={(e) => e.preventDefault()}>
           <i className="fa-solid fa-face-smile emoji"></i>
