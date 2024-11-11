@@ -40,3 +40,9 @@ html {
   place-items: center;
   background-color: var(--background-color);
 }
+
+@media (max-width: 500) {
+  html {
+    font-size: 55%;
+  }
+}

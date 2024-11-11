@@ -11,6 +11,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
   const [messages, setMessages] = useState(chats[0]?.messages || [])
   const [isTyping, setIsTyping] = useState(false)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const [showChatList, setShowChatList] = useState(false)
   const chatEndRef = useRef(null)
   
   useEffect(() => {
@@ -134,10 +135,11 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
 
   return (
     <div className="chat-app">
-      <div className="chat-list">
+      <div className={`chat-list ${showChatList ? 'show': ''}`}>
         <div className="chat-list-header">
           <h2>Chat List</h2>
           <i className="bx bx-edit-alt new-chat"  onClick={() => onNewChat()}></i>
+          <i className="bx bx-x-circle close" onClick={() => setShowChatList(false)}></i>
         </div>
         {chats.map((chat) => (
           <div
@@ -159,6 +161,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       <div className="chat-window">
         <div className="chat-title">
             <h3>Chat with AI</h3>
+            <i className="bx bx-menu" onClick={() => setShowChatList(true)}></i>
             <i className="bx bx-arrow-back arrow" onClick={onGoBack}></i>
         </div>
         <div className="chat">
