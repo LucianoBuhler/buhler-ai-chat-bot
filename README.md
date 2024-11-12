@@ -70,12 +70,12 @@ This will open the application on `http://localhost:5173`.
 buhler-ai-chat-bot/
 ├── public/                   # Static assets served by Vite
 ├── src/
+│   ├── assets/               # Static assets like images or icons
 │   ├── Components/           # React components for various parts of the UI
 │   │   ├── ChatBotApp.jsx    # Main chat interface displaying conversation history and input
 │   │   ├── ChatBotApp.css    # ChatBotApp styles
 │   │   ├── ChatBotStart.jsx  # Start page with the initial button 
 │   │   ├── ChatBotStart.css  # ChatBotStart styles
-│   │   ├── MessageInput.jsx  # Input field where users type messages to the bot
 │   ├── App.jsx               # Root component of the application
 │   ├── main.jsx              # Entry point file where the app is rendered
 │   └── index.css             # Main CSS file, imported by components as needed
