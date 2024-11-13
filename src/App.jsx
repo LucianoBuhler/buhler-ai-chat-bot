@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import ChatBotStart from './Components/ChatBotStart'
-import ChatBotApp from './Components/ChatBotApp'
+import ChatBotStart from './components/ChatBotStart'
+import ChatBotApp from './components/ChatBotApp'
 import { v4 as uuidv4 } from 'uuid';
 
 const App = () => {

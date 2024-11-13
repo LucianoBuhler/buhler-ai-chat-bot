@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import './ChatBotApp.css'
+import { getChatGPTResponse } from '../services/chatAPI';
+import '../styles/ChatBotApp.css'
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 
@@ -62,46 +63,31 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       localStorage.setItem('chats', JSON.stringify(updatedChats))
       setIsTyping(true)
 
-      // set the request variables
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${GPT_API_KEY}`,
-      }
-
-      const body = JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: inputValue }],
-        max_tokens: 500,
-      })
-
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: headers,
-        body: body,
-      })
-
-      const data = await response.json()
-      const chatResponse = data.choices[0].message.content.trim()
-
-      const newResponse = {
-        type: 'response',
-        text: chatResponse,
-        timestamp: new Date().toLocaleTimeString(),
-      }
-
-      const updatedMessagesWithResponse = [...updatedMessages, newResponse]
-      setMessages(updatedMessagesWithResponse)
-      localStorage.setItem(activeChat, JSON.stringify(updatedMessagesWithResponse))
-      setIsTyping(false)
-
-      const updatedChatsWithResponse = chats.map((chat) => {
-        if (chat.id === activeChat) {
-          return { ...chat, messages: updatedMessagesWithResponse }
+      try {
+        const chatResponse = await getChatGPTResponse(inputValue);
+        const newResponse = {
+          type: 'response',
+          text: chatResponse,
+          timestamp: new Date().toLocaleTimeString(),
         }
-        return chat
-      })
-      setChats(updatedChatsWithResponse)
-      localStorage.stringify('chats', JSON.stringify(updatedChatsWithResponse))
+  
+        const updatedMessagesWithResponse = [...updatedMessages, newResponse]
+        setMessages(updatedMessagesWithResponse)
+        localStorage.setItem(activeChat, JSON.stringify(updatedMessagesWithResponse))
+
+        setIsTyping(false)
+
+        const updatedChatsWithResponse = chats.map((chat) => {
+          if (chat.id === activeChat) {
+            return { ...chat, messages: updatedMessagesWithResponse }
+          }
+          return chat
+        })
+        setChats(updatedChatsWithResponse)
+        localStorage.setItem('chats', JSON.stringify(updatedChatsWithResponse))
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   }
 

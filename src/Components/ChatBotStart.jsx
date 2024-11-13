@@ -1,5 +1,5 @@
 import React from 'react'
-import './ChatBotStart.css'
+import '../styles/ChatBotStart.css'
 
 const ChatBotStart = ({ onStartChat }) => {
   return (
