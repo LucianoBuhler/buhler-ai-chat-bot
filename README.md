@@ -71,18 +71,23 @@ buhler-ai-chat-bot/
 ├── public/                   # Static assets served by Vite
 ├── src/
 │   ├── assets/               # Static assets like images or icons
-│   ├── Components/           # React components for various parts of the UI
-│   │   ├── ChatBotApp.jsx    # Main chat interface displaying conversation history and input
+│   ├── components/           # React components for various parts of the UI
+│   │   ├── ChatBotApp.tsx    # Main chat interface displaying conversation history and input
+│   │   ├── ChatBotStart.tsx  # Start page with the initial button 
+│   ├── services/             # React components for various parts of the UI
+│   │   ├── chatAPI.ts        # ChatGPT API service 
+│   ├── styles/               # Project styles
 │   │   ├── ChatBotApp.css    # ChatBotApp styles
-│   │   ├── ChatBotStart.jsx  # Start page with the initial button 
 │   │   ├── ChatBotStart.css  # ChatBotStart styles
-│   ├── App.jsx               # Root component of the application
-│   ├── main.jsx              # Entry point file where the app is rendered
+│   ├── App.tsx               # Root component of the application
+│   ├── main.tsx              # Entry point file where the app is rendered
 │   └── index.css             # Main CSS file, imported by components as needed
 ├── .env                      # Environment variables (e.g., API key)
 ├── .gitignore                # Files and directories to ignore in Git
+├── eslint.config.ts          # ESLint configuration
 ├── index.html                # The main HTML file served by Vite, linking to the JavaScript bundle.
-├── vite.config.js            # Vite configuration for the project
+├── vite.config.ts            # Vite configuration for the project
+├── tsconfig.json             # TypeScript compiler options
 ├── package-lock.json         # Lock file for installed dependencies
 ├── package.json              # Project dependencies and scripts
 └── README.md                 # Documentation for the project

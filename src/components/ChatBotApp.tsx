@@ -4,41 +4,61 @@ import '../styles/ChatBotApp.css'
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 
-// load env variables 
-const GPT_API_KEY = import.meta.env.VITE_GPT_API_KEY
+// Define types for ChatMessage and Chat
+interface ChatMessage {
+  type: 'prompt' | 'response';
+  text: string;
+  timestamp: string;
+}
 
-const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNewChat }) => {
-  const [inputValue, setInputValue] = useState('')
-  const [messages, setMessages] = useState(chats[0]?.messages || [])
-  const [isTyping, setIsTyping] = useState(false)
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [showChatList, setShowChatList] = useState(false)
-  const chatEndRef = useRef(null)
+interface Chat {
+  id: string;
+  displayId: string;
+  messages: ChatMessage[];
+}
+
+// Define types for component props
+interface ChatBotAppProps {
+  onGoBack: () => void;
+  chats: Chat[];
+  setChats: React.Dispatch<React.SetStateAction<Chat[]>>;
+  activeChat: string | null;
+  setActiveChat: React.Dispatch<React.SetStateAction<string | null>>;
+  onNewChat: (initialMessage?: string) => void;
+}
+
+const ChatBotApp:React.FC<ChatBotAppProps> = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNewChat }) => {
+  const [inputValue, setInputValue] = useState<string>('')
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [isTyping, setIsTyping] = useState<boolean>(false)
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false)
+  const [showChatList, setShowChatList] = useState<boolean>(false)
+  const chatEndRef = useRef<HTMLDivElement | null>(null)
   
   useEffect(() => {
-    const activeChatObj = chats.find((chat) => chat.id === activeChat)
+    const activeChatObj:ChatMessage = chats.find((chat) => chat.id === activeChat)
     setMessages(activeChatObj ? activeChatObj.messages : [])
   }, [activeChat, chats])
   
     useEffect(() => {
       if(activeChat) {
-        const storedMessages = JSON.parse(localStorage.getItem(activeChat)) || []
+        const storedMessages:ChatMessage[] = JSON.parse(localStorage.getItem(activeChat)) || []
         setMessages(storedMessages)
       }
     }, [activeChat])
 
-  const handleEmojiSelect = (emoji) => {
+  const handleEmojiSelect = (emoji: any) => {
     setInputValue((prevInput) => prevInput + emoji.native)
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
   }
 
   const sendMessage = async () => {
     if (inputValue.trim() === '') return
 
-    const newMessage = {
+    const newMessage:ChatMessage = {
       type: 'prompt',
       text: inputValue,
       timestamp: new Date().toLocaleTimeString(),
@@ -65,7 +85,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
 
       try {
         const chatResponse = await getChatGPTResponse(inputValue);
-        const newResponse = {
+        const newResponse:ChatMessage = {
           type: 'response',
           text: chatResponse,
           timestamp: new Date().toLocaleTimeString(),
@@ -91,18 +111,18 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
     }
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
     if(e.key === 'Enter') {
       e.preventDefault()
       sendMessage()
     }
   }
 
-  const handleSelectChat = (id) => {
+  const handleSelectChat = (id:string) => {
     setActiveChat(id)
   }
 
-  const handleDeleteChat = (id) => {
+  const handleDeleteChat = (id:string) => {
     const updatedChats = chats.filter((chat) => chat.id !== id)
     setChats(updatedChats)
     localStorage.setItem('chats', JSON.stringify(updatedChats))
