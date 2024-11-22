@@ -13,6 +13,7 @@ This is a **Chat Bot application built with React** using Vite as the build tool
 ## Technologies Used
 
 - **React**: Frontend framework used for building the user interface.
+- **Typescript**: Extends JavaScript by adding types to the language.
 - **Vite**: Build tool for fast development and optimized production builds.
 - **ChatGPT API**: Provides AI-powered conversation capabilities.
 - **Local Storage**: Used to store and persist conversation history.
