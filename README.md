@@ -13,10 +13,10 @@ This is a **Chat Bot application built with React** using Vite as the build tool
 ## Technologies Used
 
 - **React**: Frontend framework used for building the user interface.
-- **Typescript**: Extends JavaScript by adding types to the language.
+- **Typescript**: Superset of JavaScript for type-safe development.
 - **Vite**: Build tool for fast development and optimized production builds.
 - **ChatGPT API**: Provides AI-powered conversation capabilities.
-- **Local Storage**: Used to store and persist conversation history.
+- **ESLint**: Linting tool for consistent code quality.
 
 ## Getting Started
 
@@ -48,6 +48,15 @@ This is a **Chat Bot application built with React** using Vite as the build tool
    VITE_GPT_API_KEY=your_api_key_here
    ```
 
+### Available Scripts
+
+In the project directory, you can run:
+
+- **`npm run dev`**: Starts the development server.
+- **`npm run build`**: Builds the app for production.
+- **`npm run preview`**: Previews the production build locally.
+- **`npm run lint`**: Runs ESLint to check code quality.
+
 ### Running the Application
 
 To start the development server with Vite, run:
@@ -57,6 +66,26 @@ npm run dev
 ```
 
 This will open the application on `http://localhost:5173`.
+
+## Using ESLint
+
+This project uses **ESLint** to maintain code quality and consistency. ESLint helps enforce coding standards and identify potential issues during development.
+
+### Running ESLint
+
+To run ESLint and check for issues in your code:
+
+```bash
+npm run lint
+```
+
+### Fixing Issues
+
+You can automatically fix some linting issues using the `--fix` flag:
+
+```bash
+npm run lint -- --fix
+```
 
 ## Usage
 
