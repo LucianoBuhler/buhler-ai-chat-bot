@@ -3,13 +3,28 @@ import ChatBotStart from './components/ChatBotStart'
 import ChatBotApp from './components/ChatBotApp'
 import { v4 as uuidv4 } from 'uuid';
 
-const App = () => {
-  const [isChatting, setIsChatting] = useState(false)
-  const [chats, setChats] = useState([])
-  const [activeChat, setActiveChat] = useState(null)
+// Define type for a single chat message
+interface ChatMessage {
+  type: 'prompt';
+  text: string;
+  timestamp: string; // Alternatively, Date type could be used with additional parsing
+}
+
+// Define type for a chat
+interface Chat {
+  id: string;
+  displayId: string;
+  messages: ChatMessage[];
+}
+
+
+const App:React.FC = () => {
+  const [isChatting, setIsChatting] = useState<boolean>(false)
+  const [chats, setChats] = useState<Chat[]>([])
+  const [activeChat, setActiveChat] = useState<string>(null)
 
   useEffect(() => {
-    const storedChats = JSON.parse(localStorage.getItem('chats')) || []
+    const storedChats:Chat[] = JSON.parse(localStorage.getItem('chats')) || []
     setChats(storedChats)
 
     if (storedChats.length > 0) {
@@ -29,7 +44,7 @@ const App = () => {
     setIsChatting(false)
   }
 
-  const createNewChat = (initialMessage = '') => {
+  const createNewChat = (initialMessage:string = '') => {
     const newChat = {
       id: uuidv4(),
       displayId: `Chat ${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString()}`,

@@ -13,9 +13,10 @@ This is a **Chat Bot application built with React** using Vite as the build tool
 ## Technologies Used
 
 - **React**: Frontend framework used for building the user interface.
+- **Typescript**: Superset of JavaScript for type-safe development.
 - **Vite**: Build tool for fast development and optimized production builds.
 - **ChatGPT API**: Provides AI-powered conversation capabilities.
-- **Local Storage**: Used to store and persist conversation history.
+- **ESLint**: Linting tool for consistent code quality.
 
 ## Getting Started
 
@@ -47,6 +48,15 @@ This is a **Chat Bot application built with React** using Vite as the build tool
    VITE_GPT_API_KEY=your_api_key_here
    ```
 
+### Available Scripts
+
+In the project directory, you can run:
+
+- **`npm run dev`**: Starts the development server.
+- **`npm run build`**: Builds the app for production.
+- **`npm run preview`**: Previews the production build locally.
+- **`npm run lint`**: Runs ESLint to check code quality.
+
 ### Running the Application
 
 To start the development server with Vite, run:
@@ -56,6 +66,26 @@ npm run dev
 ```
 
 This will open the application on `http://localhost:5173`.
+
+## Using ESLint
+
+This project uses **ESLint** to maintain code quality and consistency. ESLint helps enforce coding standards and identify potential issues during development.
+
+### Running ESLint
+
+To run ESLint and check for issues in your code:
+
+```bash
+npm run lint
+```
+
+### Fixing Issues
+
+You can automatically fix some linting issues using the `--fix` flag:
+
+```bash
+npm run lint -- --fix
+```
 
 ## Usage
 
@@ -71,18 +101,23 @@ buhler-ai-chat-bot/
 ├── public/                   # Static assets served by Vite
 ├── src/
 │   ├── assets/               # Static assets like images or icons
-│   ├── Components/           # React components for various parts of the UI
-│   │   ├── ChatBotApp.jsx    # Main chat interface displaying conversation history and input
+│   ├── components/           # React components for various parts of the UI
+│   │   ├── ChatBotApp.tsx    # Main chat interface displaying conversation history and input
+│   │   ├── ChatBotStart.tsx  # Start page with the initial button 
+│   ├── services/             # React components for various parts of the UI
+│   │   ├── chatAPI.ts        # ChatGPT API service 
+│   ├── styles/               # Project styles
 │   │   ├── ChatBotApp.css    # ChatBotApp styles
-│   │   ├── ChatBotStart.jsx  # Start page with the initial button 
 │   │   ├── ChatBotStart.css  # ChatBotStart styles
-│   ├── App.jsx               # Root component of the application
-│   ├── main.jsx              # Entry point file where the app is rendered
+│   ├── App.tsx               # Root component of the application
+│   ├── main.tsx              # Entry point file where the app is rendered
 │   └── index.css             # Main CSS file, imported by components as needed
 ├── .env                      # Environment variables (e.g., API key)
 ├── .gitignore                # Files and directories to ignore in Git
+├── eslint.config.ts          # ESLint configuration
 ├── index.html                # The main HTML file served by Vite, linking to the JavaScript bundle.
-├── vite.config.js            # Vite configuration for the project
+├── vite.config.ts            # Vite configuration for the project
+├── tsconfig.json             # TypeScript compiler options
 ├── package-lock.json         # Lock file for installed dependencies
 ├── package.json              # Project dependencies and scripts
 └── README.md                 # Documentation for the project
